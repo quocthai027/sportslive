@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'Widget/bestnc.dart';
 import 'Widget/blv.dart';
 import 'Widget/dinhcao.dart';
+import 'Widget/footer.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -89,7 +90,10 @@ class HomePage extends StatelessWidget {
             buildMatchSlider(),
              BettingListWidget(),
              FeaturedCommentatorsWidget(commentators: commentators),
-            
+            ContentSection(),
+              FooterScreen(),
+             
+
           ],
         ),
       ),
@@ -386,7 +390,7 @@ Widget buildMatchSlider() {
                   ),
                 ),
               ),
-             
+           
             ],
           ),
         ),

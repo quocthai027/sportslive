@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'Widget/dinhcao.dart';
+import 'Widget/footer.dart';
 import 'Widget/password_field.dart';
 import 'Widget/username_field.dart';
 import 'dangky.dart';

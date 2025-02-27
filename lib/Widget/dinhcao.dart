@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class ContentSection extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _ContentSectionState createState() => _ContentSectionState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ContentSectionState extends State<ContentSection> {
   int selectedIndex = 0;
-  ScrollController _scrollController = ScrollController();
 
   final List<Map<String, String>> menuItems = [
     {
@@ -34,241 +33,74 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text(
-          "500AE TV - TRANG BÓNG ĐÁ ĐỈNH CAO",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.orange,
-        centerTitle: false,
-      ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification notification) {
-          // Nếu người dùng cuộn đến cuối màn hình, tiếp tục cho phép cuộn xuống phần dưới
-          if (notification.metrics.pixels == notification.metrics.maxScrollExtent) {
-            print("Cuộn hết nội dung hiển thị, tiếp tục xuống widget phía dưới");
-          }
-          return false;
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Thanh bên trái với danh mục
-                Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        
+        // Danh sách menu
+        Stack(
+          children:[
+            Positioned.fill(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: 6,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            Column(
+            children: List.generate(menuItems.length, (index) {
+              bool isSelected = index == selectedIndex;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                },
+                child: Row(
                   children: [
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: 6,
-                          color: Colors.white,
+                    Container(
+                      width: 6,
+                      height: 40,
+                      color: isSelected ? Colors.orange : Colors.transparent,
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          menuItems[index]["title"]!,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: isSelected ? Colors.orange : Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                    Column(
-                      children: List.generate(menuItems.length, (index) {
-                        bool isSelected = index == selectedIndex;
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                            _scrollController.jumpTo(0);
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 6,
-                                height: 40,
-                                color: isSelected ? Colors.orange : Colors.transparent,
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Text(
-                                    menuItems[index]["title"]!,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: isSelected ? Colors.orange : Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
                   ],
                 ),
-                SizedBox(height: 20),
-                
-                // Nội dung chính
-                // Nội dung chính với khả năng cuộn trong vùng giới hạn
-SizedBox(
-  height: 200, // Giới hạn chiều cao nội dung
-  child: NotificationListener<ScrollNotification>(
-    onNotification: (ScrollNotification notification) {
-      if (notification.metrics.atEdge) {
-        if (notification.metrics.pixels > 0) {
-          // Nếu cuộn xuống hết, tiếp tục cuộn xuống phần nội dung tiếp theo
-          _scrollController.animateTo(
-            _scrollController.position.pixels + 50,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        } else {
-          // Nếu cuộn lên đầu, tiếp tục cuộn lên phần nội dung trước đó
-          _scrollController.animateTo(
-            _scrollController.position.pixels - 50,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        }
-      }
-      return false;
-    },
-    child: SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 176, 15, 15).withOpacity(0.2),
-          borderRadius: BorderRadius.circular(6),
+              );
+            }),
+          ),
+          ] 
         ),
-        child: Text(
-          menuItems[selectedIndex]["content"]!,
-          style: TextStyle(fontSize: 18, color: Colors.white70),
-        ),
-      ),
-    ),
-  ),
-),
 
-                SizedBox(height: 20),
+        SizedBox(height: 20),
 
-                // PHẦN WIDGET PHÍA DƯỚI
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[900],
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Nội dung phía dưới",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.orange),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Đây là phần tiếp theo nằm trong Column.\n\n"
-                        "Người dùng có thể tiếp tục cuộn xuống để xem thông tin khác mà không bị khựng lại ở phần hiển thị nội dung phía trên.",
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                // Widget khác phía dưới nữa
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[850],
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    "Thông tin bổ sung hoặc quảng cáo",
-                    style: TextStyle(fontSize: 16, color: Colors.white70),
-                  ),
-                ),
-                // PHẦN WIDGET PHÍA DƯỚI
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[900],
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Nội dung phía dưới",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.orange),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Đây là phần tiếp theo nằm trong Column.\n\n"
-                        "Người dùng có thể tiếp tục cuộn xuống để xem thông tin khác mà không bị khựng lại ở phần hiển thị nội dung phía trên.",
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ),// PHẦN WIDGET PHÍA DƯỚI
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[900],
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Nội dung phía dưới",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.orange),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Đây là phần tiếp theo nằm trong Column.\n\n"
-                        "Người dùng có thể tiếp tục cuộn xuống để xem thông tin khác mà không bị khựng lại ở phần hiển thị nội dung phía trên.",
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ),// PHẦN WIDGET PHÍA DƯỚI
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[900],
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Nội dung phía dưới",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.orange),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Đây là phần tiếp theo nằm trong Column.\n\n"
-                        "Người dùng có thể tiếp tục cuộn xuống để xem thông tin khác mà không bị khựng lại ở phần hiển thị nội dung phía trên.",
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+        // Nội dung hiển thị của menu
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            menuItems[selectedIndex]["content"]!,
+            style: TextStyle(fontSize: 18, color: Colors.white70),
           ),
         ),
-      ),
+      ],
     );
   }
 }
