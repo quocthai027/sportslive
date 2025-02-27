@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../Footer/banquyen.dart';
 import '../Footer/lienhe.dart';
 import '../Footer/mientrutrachnhiem.dart';
 import '../Footer/vechungtoi.dart';
@@ -89,7 +90,12 @@ class FooterScreen extends StatelessWidget {
               );
             }),
             const SizedBox(width: 40),
-            _footerNavItem(context, 'Bản quyền', () {}),
+            _footerNavItem(context, 'Bản quyền', () {
+               Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CopyrightPolicyScreen()),
+              );
+            }),
           ],
         ),
       ],
