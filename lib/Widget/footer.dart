@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../Footer/banquyen.dart';
+import '../Footer/dieukhoan.dart';
 import '../Footer/lienhe.dart';
 import '../Footer/mientrutrachnhiem.dart';
 import '../Footer/vechungtoi.dart';
@@ -49,7 +50,7 @@ class FooterScreen extends StatelessWidget {
               const SizedBox(height: 30),
               _buildFooterNavigation(context),
               const SizedBox(height: 30),
-              _buildFooterSection(),
+              _buildFooterSection(context),
             ],
           ),
         ),
@@ -116,13 +117,21 @@ class FooterScreen extends StatelessWidget {
 
 
   /// **Tạo Phần Footer**
-  Widget _buildFooterSection() {
+  Widget _buildFooterSection(BuildContext context) {
     return Column(
       children: [
-        const Text(
+        GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TermsScreen()),
+          );
+        },
+        child: const Text(
           'Điều khoản & Điều kiện',
-          style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
+      ),
         const SizedBox(height: 30),
         const Text(
           'Chính sách bảo mật',
